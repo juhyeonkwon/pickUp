@@ -42,13 +42,16 @@ app.set('view engine', 'jade');
 
 //라우팅 정의
 let test = require('./routes/test.js');
-let upload = require('./routes/upload.js')
+let upload = require('./routes/upload.js');
+
+//user
+let signup = require('./routes/user/signup.js');
 
 
 //라우팅
 app.use('/test', test);
 app.use('/upload', upload);
-
+app.use('/signup', signup);
 
 
 
