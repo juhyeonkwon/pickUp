@@ -34,14 +34,16 @@ router.post('/', upload.single('file') , async function(req, res, next) {
     console.log(req.file.filename);
 */
     console.log(req.body); 
+    req.body.situation
+
 
     //파라미터 정리..
     let params_coordi = [
+    user_id = parseInt(req.body.user_id),
     filename = req.file.filename,
-    password = req.body.password
     ]
 
-    const query = await pool.query('INSERT INTO coordinate(file, score, report, password) VALUES (?, 0, 0, ?)', params_coordi);
+    const query = await pool.query('INSERT INTO coordinate(user_id, file, score, report, week_score) VALUES (?, ?, 0, 0, 0)', params_coordi);
     console.log(query[0].insertId);
 
     if(query.affectedRows < 1) {
@@ -77,9 +79,6 @@ router.post('/', upload.single('file') , async function(req, res, next) {
         return ;
     }
 
-
-    //시즌은 숫자로 주세요... 제..발...
-    //시즌에 대한 쿼리 진행
     let params_season = [
         coordi_id,
         season = parseInt(req.body.season)
@@ -104,7 +103,6 @@ router.post('/', upload.single('file') , async function(req, res, next) {
     }
     
     res.send("sucess");
-
     return;
 })
 

@@ -44,14 +44,16 @@ app.set('view engine', 'jade');
 let test = require('./routes/test.js');
 let upload = require('./routes/upload.js');
 
+
 //user
 let signup = require('./routes/user/signup.js');
-
+let login = require('./routes/user/login');
 
 //라우팅
 app.use('/test', test);
 app.use('/upload', upload);
 app.use('/signup', signup);
+app.use('/login', login);
 
 
 

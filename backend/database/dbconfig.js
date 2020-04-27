@@ -3,7 +3,7 @@ let connection = {
     port : 3307,
     user : 'pickup',
     password: 'pickup1@3',
-    database : 'pickup'
+    database : 'pickup',
 }
 
 module.exports = connection

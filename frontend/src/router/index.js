@@ -3,7 +3,7 @@ import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
 import upload from '@/components/upload'
 import test from '@/components/test'
-
+import signup from '@/components/Signup'
 
 Vue.use(Router)
 
@@ -23,6 +23,11 @@ export default new Router({
       path: '/test',
       name: 'test',
       component: test
+    },
+    {
+      path : '/signup',
+      name : 'signup',
+      component : signup
     }
   ]
 })

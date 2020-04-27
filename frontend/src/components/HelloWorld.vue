@@ -2,6 +2,7 @@
   <div class="hello">
     hello~ 
     <button v-on:click="abc()"> 클릭 </button> 
+    <p>123123 </p>
 
     <p> {{ msg }} </p>
 

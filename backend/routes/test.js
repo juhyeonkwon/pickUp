@@ -3,8 +3,7 @@ var router = express.Router();
 
 /* test home page. */
 router.post('/', function(req, res, next) {
-  res.send('hello');
-  console.log('hl');
+  res.send('1');
 });
 
 module.exports = router;
