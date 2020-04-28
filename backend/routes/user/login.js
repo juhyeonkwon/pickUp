@@ -38,14 +38,11 @@ router.post('/', async function(req, res) {
         res.send('succes');
     } else {
         res.send('0')
-    }  
-
+    } 
+    
+    return ;
     
 });
 
-router.post('/test', function(req, res) {
-    console.log('hi');
-    console.log(req.cookies.user_id);
-})
 
 module.exports = router;

@@ -44,8 +44,15 @@ app.use(cookieParser());
 
 //라우팅 정의
 let test = require('./routes/test.js');
+
+//main
+let main = require('./routes/main.js');
+
+//upload
 let upload = require('./routes/upload.js');
 
+//coordi_func
+let coordi_func = require('./routes/coordi/coordi_func');
 
 //user
 let signup = require('./routes/user/signup.js');
@@ -56,8 +63,8 @@ app.use('/test', test);
 app.use('/upload', upload);
 app.use('/signup', signup);
 app.use('/login', login);
-
-
+app.use('/main', main);
+app.use('/coordi_func', coordi_func)
 
 //서버 실행
 app.listen(3000, () => console.log('listening on port 3000!'));

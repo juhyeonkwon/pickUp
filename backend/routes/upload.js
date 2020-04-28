@@ -1,8 +1,6 @@
 const express = require('express');
 const router = express.Router();
 
-//비동기 함수 사용을 위한 async
-let async = require('async');
 
 //mysql을 사용을 위한 선언 및 정의
 const mysql = require('mysql2/promise');
