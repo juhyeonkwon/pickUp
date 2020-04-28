@@ -6,8 +6,7 @@ const express       = require('express');
 const bodyParser    = require('body-parser');
 const path          = require('path');
 const dbconfig      = require('./database/dbconfig')
-
-
+const cookieParser  = require('cookie-parser');
 const app = express();
 
 /* 기본 세팅 */
@@ -35,6 +34,9 @@ app.use(bodyParser.json());
 app.get('/hello', (req, res) => res.send('Hello'));
 
 app.set('view engine', 'jade');
+
+//쿠키
+app.use(cookieParser());
 
 
 /* 기본 세팅 끝 */

@@ -34,6 +34,7 @@ router.post('/', async function(req, res) {
     
     if(rows[0].password === password) {
         res.cookie('user_id', rows[0].user_id, { expires: new Date(Date.now() + 900000), httpOnly: true });
+        res.cookie('nick_name', rows[0].nick_name, { expires: new Date(Date.now() + 900000), httpOnly: true })
         res.send('succes');
     } else {
         res.send('0')
@@ -41,5 +42,10 @@ router.post('/', async function(req, res) {
 
     
 });
+
+router.post('/test', function(req, res) {
+    console.log('hi');
+    console.log(req.cookies.user_id);
+})
 
 module.exports = router;
