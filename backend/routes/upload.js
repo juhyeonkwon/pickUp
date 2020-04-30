@@ -32,6 +32,8 @@ router.post('/', upload.single('file') , async function(req, res, next) {
  
     console.log(req.body);
 
+    usr_id = res.cookies
+
     //파라미터 정리..
     let params_coordi = [
     user_id = parseInt(req.body.user_id),
@@ -45,7 +47,7 @@ router.post('/', upload.single('file') , async function(req, res, next) {
     item1 = req.body.item1,
     item2 = req.body.item2,
     item3 = req.body.item3,
-    ]
+    ]      
 
     connection.query('INSERT INTO coordinate(user_id, file, score, report, week_score, situation1, situation2, color1, color2, season1, season2, item1, item2, item3) VALUES (?, ?, 0, 0, 0, ?, ?, ?, ?, ?, ?, ?, ?, ?)', params_coordi, 
         function(err, results, fields) {

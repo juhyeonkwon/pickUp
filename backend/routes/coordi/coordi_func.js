@@ -17,11 +17,18 @@ router.post('/modify_view', async function(req, res) {
 
     let connection = await mysqlPromise.createConnection(dbconfig);
 
-    const [rows, field] = await connection.execute('SELECT file, situation1, situation2, color1, color2, season1, season2, item1, item2, item3 FROM coordinate WHERE coordi_id = ?', params)
+    const [rows, field] = await connection.execute('SELECT user_id, file, situation1, situation2, color1, color2, season1, season2, item1, item2, item3 FROM coordinate WHERE coordi_id = ?', params)
+
+    //다른사람이 수정하려고 했을때 오류를 냅니다...
+
+    if(rows[0].user_id != req.cookies.user_id) {
+        res.send('0');
+        return ;
+    }
 
     if(rows.length < 1) {
-        res.send('err!');
-        return 0;
+        res.send('0');
+        return ;
     }
 
     res.send(rows);
@@ -73,9 +80,7 @@ router.post('/modify', upload.single('file'), function(req, res) {
                         }
                     });
 
-     return ;
-
-    
+     return ;    
 
 })
 

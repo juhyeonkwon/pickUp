@@ -58,13 +58,21 @@ let coordi_func = require('./routes/coordi/coordi_func');
 let signup = require('./routes/user/signup.js');
 let login = require('./routes/user/login');
 
+//profile
+let profile = require('./routes/user/profile.js');
+
+//코디 게시판
+let coordi_list = require('./routes/coordi/coordi_list.js')
+
 //라우팅
 app.use('/test', test);
 app.use('/upload', upload);
 app.use('/signup', signup);
 app.use('/login', login);
 app.use('/main', main);
-app.use('/coordi_func', coordi_func)
+app.use('/coordi_func', coordi_func);
+app.use('/coordi_list', coordi_list);
+app.use('/profile', profile);
 
 //서버 실행
 app.listen(3000, () => console.log('listening on port 3000!'));
