@@ -11,8 +11,6 @@ router.post('/', function(req, res){
 })
 
 
-
-
 //
 router.post('/view', async function(req, res){
     let user_id = req.cookies.user_id;
@@ -54,14 +52,10 @@ router.post('/modify', function(req, res) {
             })
           }
           if(results.length) {
-            res.send({
-              "value" : 0       //해당 닉네임이 존재할시
-            });
+            res.send('0');
           } else {
-            res.send({
-              "value" : 1       //해당 닉네임이 존재하지 않을시
-            });
-          }          
+            res.send('1');
+          }            
           console.log(results);
     });
     

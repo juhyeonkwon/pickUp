@@ -87,7 +87,7 @@ router.post('/', function(req, res) {
   let connection = mysql.createConnection(dbconfig);
 
   connection.query('INSERT INTO pickup.users(email , password, nick_name) VALUES (?,?,?)', params, function(err, results, fields) {
-    console.log(results);
+    console.log(err);
     if(results != undefined) {
       res.send(results);
     } else {

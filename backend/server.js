@@ -14,6 +14,8 @@ const app = express();
 
 //static 파일 제공
 app.use(express.static('./static'));
+app.use(express.static('./public'));
+
 
 
 //cross 도메인 요청을 처리하기 위한것
@@ -57,12 +59,18 @@ let coordi_func = require('./routes/coordi/coordi_func');
 //user
 let signup = require('./routes/user/signup.js');
 let login = require('./routes/user/login');
-
+let withdrawal = require('./routes/user/withdrawal.js')
 //profile
 let profile = require('./routes/user/profile.js');
 
 //코디 게시판
 let coordi_list = require('./routes/coordi/coordi_list.js')
+
+//이상형 월드컵
+let worldcup = require('./routes/worldcup/worldcup.js');
+
+//추천기능
+let recommand = require('./routes/recommand/recommand');
 
 //라우팅
 app.use('/test', test);
@@ -73,6 +81,11 @@ app.use('/main', main);
 app.use('/coordi_func', coordi_func);
 app.use('/coordi_list', coordi_list);
 app.use('/profile', profile);
+app.use('/withdrawal', withdrawal);
+app.use('/worldcup', worldcup);
+app.use('/recommand', recommand);
+
+
 
 //서버 실행
 app.listen(3000, () => console.log('listening on port 3000!'));

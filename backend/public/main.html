@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width"> <!-- 모니터 크기에 따른 웹페이지의 크기-->
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"> <!-- edge 표준모드-->
+    <!-- HTLM5shiv ie6~8 -->
+    <!--[if lt IE 9]> 
+      <script src="assets/js/html5shiv.min.js"></script>
+      <script type="text/javascript">
+         alert("현재 브라우저는 지원하지 않습니다. 크롬 브라우저를 추천합니다.!");
+      </script>
+   <![endif]-->
+    <title>옷좀골라줄래</title>
+    <!-- 스타일 시트-->
+    <link rel="stylesheet" href="assets/css/reset.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/swiper.min.css">
+
+    <script src="main.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+
+</head>
+
+<body onload="create()">
+    <div class="overlay">
+
+    </div>
+    <header id="header">
+        <div class="container">
+            <div class="row">
+                <div class="header clearfix">
+                    <h1>
+                        <span id="sidebarCollapse">
+                            <img src="assets/img/btn_category.png" alt="카테고리">
+                        </span>
+                        <em class="logo">
+                            <a href=#>
+                                <strong>옷 좀 골라줄래?</strong>
+                                <em>
+                                    Can you pick some clothes?
+                                </em>
+
+                            </a>
+                        </em>
+                    </h1>
+                    <div class="search" id="sc">
+                        <input class="search__input" type="text" placeholder="Search">
+                        <input class="search__btn" type="button">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="sidebar" class="sidenav">
+            <a class="closebtn">&times;</a>
+            <a href="#">코디 Photo</a>
+            <a href="#">이상형 월드컵</a>
+            <a href="#">코디 추천</a>
+            <a href="#">Contact</a>
+        </div>
+    </header>
+    <section id="banner">
+        <div class="container">
+            <div class="row">
+                <div class="swiper-container">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide"><img src="assets/img/banner.png"></div>
+                    </div>
+                    <!-- Add Arrows -->
+                    <div class="swiper-button-next"></div>
+                    <div class="swiper-button-prev"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="new">
+        <div class="container">
+            <div class="row">
+                <div class="sub_title">
+                    <h1>NEW</h1>
+                    <em><a href="#">더보기 ></a></em>
+                </div>
+                <div class="photo" id="photo">
+                    <!--
+                    <script>
+                        let xhr = new XMLHttpRequest();
+
+                        xhr.open('POST', 'http://121.1.71.52:3000/main')
+                        xhr.setRequestHeader('Content-type', "application/json");
+                        xhr.send();
+
+                        let newData;
+
+                        xhr.addEventListener('load', function() {
+                            let newData = JSON.parse(xhr.response);
+                            console.log(newData);
+                            
+                            let i = 0;
+                            for( i; i < newData.length; i++) {
+                                console.log('http://121.1.71.52:3000/coordi/' + newData[i].file + ')');
+                                let figure = document.createElement( 'figure' );
+                                let href = document.createElement( 'a' );
+                                href.setAttribute('onclick', 'post()');
+                                let div = document.createElement('div', 'background: url(http://121.1.71.52:3000/coordi/' + newData[i].file +') no-repeat center center; background-size: cover');
+                                div.style.background = 'url(http://121.1.71.52:3000/coordi/' + newData[i].file + ')';
+                                div.style.backgroundSize = 'cover'
+                                div.style.cursor = 'pointer'
+
+                                href.appendChild(div);
+                                figure.appendChild(href);
+
+                                let photo = document.getElementById('photo');
+                                photo.appendChild(figure)
+                            }
+                        });
+
+                    </script>
+                -->
+                    
+                    <figure>
+                        <a href="#">
+                            <div style="background: url(assets/img/noimage.jpg) no-repeat center center; background-size: cover;"></div>
+                        </a>
+                    </figure>
+                    <figure>
+                        <a href="#">
+                            <div style="background: url(assets/img/noimage.jpg) no-repeat center center; background-size: cover;"></div>
+                        </a>
+                    </figure>
+                    <figure>
+                        <a href="#">
+                            <div style="background: url(assets/img/noimage.jpg) no-repeat center center; background-size: cover;"></div>
+                        </a>
+                    </figure>
+                    <figure>
+                        <a href="#">
+                            <div style="background: url(assets/img/noimage.jpg) no-repeat center center; background-size: cover;"></div>
+                        </a>
+                    </figure>
+                
+                </div>
+            </div>
+        </div>
+        <div id="app">
+            {{ message }}
+          </div>
+    </section>
+    <section id="choice">
+        <div class="container">
+            <div class="row">
+                <div class="sub_title">
+                    <h1>Choice</h1>
+                    <em><a href="#">더보기 ></a></em>
+                </div>
+                <div class="photo">
+                    <figure><a href="#"><img src="assets/img/noimage.jpg"></a></figure>
+                    <figure><a href="#"><img src="assets/img/noimage.jpg"></a></figure>
+                    <figure><a href="#"><img src="assets/img/noimage.jpg"></a></figure>
+                    <figure><a href="#"><img src="assets/img/noimage.jpg"></a></figure>
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer id="footer">
+        <div id="footer_infor">
+            <div class="container">
+                <div class="row">
+                    <div class="footer_infor">
+                        <ul>
+                            <li><a href="#">홈페이지 이용약관</a></li>
+                            <li><a href="#">개인정보 취급방침</a></li>
+                            <li><a href="#">게시물 게재일칙</a></li>
+                        </ul>
+                        <p></p>
+                        <p></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </footer>
+    <!-- 자바스크립트 라이브러리 -->
+    <script src="assets/js/jquery.min_1.12.4.js"></script>
+    <script src="assets/js/modernizr-custom.js"></script>
+    <script src="assets/js/swiper.min.js"></script>
+    <script src="assets/js/ie-checker.js"></script>
+    <!-- 자바스크립트 코드-->
+    <script>
+        /*네비게이션 */
+        $('#sidebarCollapse').on('click', function() {
+            $('#sidebar').addClass('active');
+            $('.overlay').fadeIn();
+        });
+
+        $('.overlay').on('click', function() {
+            $('#sidebar').removeClass('active');
+            $('.overlay').fadeOut();
+        });
+
+        $('.closebtn').on('click', function() {
+            $('#sidebar').removeClass('active');
+            $('.overlay').fadeOut();
+        });
+        /*배너 이미지 슬라이드*/
+        var swiper = new Swiper('.swiper-container', {
+            loop: true,
+            pagination: {
+                el: '.swiper-pagination',
+                type: 'fraction',
+            },
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+            autoplay: {
+                delay: 5000,
+            }
+        });
+    </script>
+
+<!-- VUE -->
+
+<script>
+    var app = new Vue({
+  el: '#app',
+  data: {
+    message: '안녕하세요 Vue!'
+  }
+});
+
+</script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width"> <!-- 모니터 크기에 따른 웹페이지의 크기-->
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"> <!-- edge 표준모드-->
+    <!-- HTLM5shiv ie6~8 -->
+    <!--[if lt IE 9]> 
+      <script src="assets/js/html5shiv.min.js"></script>
+      <script type="text/javascript">
+         alert("현재 브라우저는 지원하지 않습니다. 크롬 브라우저를 추천합니다.!");
+      </script>
+   <![endif]-->
+    <title>옷좀골라줄래</title>
+    <!-- 스타일 시트-->
+    <link rel="stylesheet" href="assets/css/reset.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/viewer.min.css">
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+</head>
+
+<body>
+    <div class="overlay">
+
+    </div>
+    <header id="header">
+        <div class="container">
+            <div class="row">
+                <div class="header clearfix">
+                    <h1>
+                        <span id="sidebarCollapse">
+                            <img src="assets/img/btn_category.png" alt="카테고리">
+                        </span>
+                        <em class="logo">
+                            <a href=#>
+                                <strong>옷 좀 골라줄래?</strong>
+                                <em>
+                                    Can you pick some clothes?
+                                </em>
+
+                            </a>
+                        </em>
+                    </h1>
+                    <div class="login">
+                        <a href="#">로그인</a>
+                        <a href="#">ID/PW찾기</a>
+                        <a href="#">회원가입</a>
+                    </div>
+                    <div class="search" id="sc">
+                        <input class="search__input" type="text" placeholder="Search">
+                        <input class="search__btn" type="button">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="sidebar" class="sidenav">
+            <a class="closebtn">&times;</a>
+            <a href="#">코디 Photo</a>
+            <a href="#">이상형 월드컵</a>
+            <a href="#">코디 추천</a>
+            <a href="#">Contact</a>
+        </div>
+    </header>
+    <section id="banner">
+        <div class="container">
+            <div class="row">
+                <img src="assets/img/banner.png">
+            </div>
+        </div>
+    </section>
+    <section id="coordi">
+        <div class="container">
+            <div class="row">
+                <div class="sub_title">
+                    <h1>코디게시판</h1>
+                </div>
+                <div class="array">
+                    <ul>
+                        <li>최신순</li>
+                        <li>오래된순</li>
+                    </ul>
+                </div>
+                <div class="photo clearfix">
+                    
+                   <ul id='photo' class = 'photo'>                     
+                        <li v-for="coordi in coordis" class="item">
+                            <img :src="coordi.file"  v-on:click="detail(coordi.coordi_id)">
+                        </li>                        
+                    </ul>
+
+                    <aside id="modal">
+                        <a class="closebtn">&times;</a>
+                        <div class="infor">
+                        <div class="img">
+                         <img :src="file"/>
+                          <em class="name">
+                           <a href="#">
+                            <strong>
+                                {{nick_name}}
+                               </strong>
+                            <em>
+                                ({{email}})
+                              </em>
+                              </a>
+                              </em>
+                    
+                        </div>
+                        
+                        <div class="tag">
+                            <img src="assets/img/tag.jpg">
+                            <div class="tag_infor">
+                            <em> {{tag}} </em>
+                            </div>
+                        </div>
+                        <div class="btn report"><em>신고</em></div>
+                        <div class="btn erase"><em>삭제</em></div>
+                        <div class="btn rewrite"><em>수정</em></div>
+                        </div>
+                    </aside>
+                    <!--Vue.JS 기능 통합 코드
+                        만든이 : 권주현
+                        날짜 : 20.05.06
+                        서버로부터 데이터를 불러와서 이미지를 표시합니다
+                    -->
+                    <script>
+                        var photo = new Vue({
+                            el: '.photo',
+                            mounted:function() {
+                               this.onload();
+                                
+                            },
+                            data : {
+                                num : 1,
+                                coordis : '',
+
+
+                                //상세보기 할때 보여줄것들
+                                user_id : 0,
+                                file : '',
+                                nick_name : '',
+                                email : '',
+                                tag : '',
+
+                            
+                            },
+                            methods : {
+                                onload : function() {
+                                    axios.post('http://121.1.71.52:3000/coordi_list', {num : 1}).then(response => {
+                                        console.log(response.data[0]);
+                                        this.coordis = response.data
+
+                                        for(let i = 0 ; i < this.coordis.length; i++) {
+                                            this.coordis[i].file = 'http://121.1.71.52:3000/coordi/' + this.coordis[i].file;
+                                        }
+
+                                        console.log(this.coordis)
+                                    });
+                            },
+                            detail : function(coordi) {
+                                let coordi_id = coordi;
+                                axios.post('http://121.1.71.52:3000/coordi_func/detail_view', {coordi_id : coordi_id}).then(response => {
+                                    console.log(response.data);
+                                    this.user_id = response.data[0].user_id;
+                                    this.file = 'http://121.1.71.52:3000/coordi/' + response.data[0].file;
+                                    this.nick_name = response.data[0].nick_name;
+                                    this.email = response.data[0].email;
+                                    this.tag = '';
+
+
+                                    //태그 입력
+                                    this.tag = this.tag + response.data[0].item1;
+                                    this.tag = this.tag + ' ' + response.data[0].item2;
+                                    this.tag = this.tag + ' ' + response.data[0].item3;
+                                    this.tag = this.tag + ' ' + response.data[0].season1;
+                                    this.tag = this.tag + ' ' + response.data[0].season2;
+                                    this.tag = this.tag + ' ' + response.data[0].situation1;
+                                    this.tag = this.tag + ' ' + response.data[0].situation2;
+                                    this.tag = this.tag + ' ' + response.data[0].color1;
+                                    this.tag = this.tag + ' ' + response.data[0].color2;
+
+                                });
+
+                                $('body').css("overflow","hidden");
+                                $('#modal').show();
+                                $('.overlay').show();
+                            }
+                        }
+                    });
+                    </script>
+                    
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="upload">
+        <div class="container">
+            <div class="row">
+                <div class="upload">
+                    <h1>당신만의 코디를 올려 보세요</h1>
+                    <div class="button">
+                        <a href="#">
+                            <div class="button_a">
+                                <strong>코디 올리기</strong>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer id="footer">
+        <div id="footer_infor">
+            <div class="container">
+                <div class="row">
+                    <div class="footer_infor">
+                        <ul>
+                            <li><a href="#">홈페이지 이용약관</a></li>
+                            <li><a href="#">개인정보 취급방침</a></li>
+                            <li><a href="#">게시물 게재일칙</a></li>
+                        </ul>
+                        <p></p>
+                        <p></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- 자바스크립트 라이브러리 -->
+    <script src="assets/js/jquery.min_1.12.4.js"></script>
+    <script src="assets/js/modernizr-custom.js"></script>
+    <script src="assets/js/ie-checker.js"></script>
+    <script src="assets/js/viewer.min.js"></script>
+    <!-- 자바스크립트 코드-->
+    <script>
+        /*네비게이션 */
+        $('#sidebarCollapse').on('click', function() {
+            $('#sidebar').addClass('active');
+            $('.overlay').fadeIn();
+        });
+
+        $('.overlay').on('click', function() {
+            $('#sidebar').removeClass('active');
+            $('.overlay').fadeOut();
+            $('body').css("overflow","auto")
+            $('#modal').hide();
+        });
+
+        $('.closebtn').on('click', function() {
+            $('#sidebar').removeClass('active');
+            $('.overlay').fadeOut();
+
+        });
+        /*상세보기 */
+        $('.item img').on('click', function() {
+            $('body').css("overflow","hidden");
+            $('.img img').attr('src',$(this).attr('src'));
+            $('#modal').show();
+            $('.overlay').show();
+        });
+            $('.item img').on('click', function() {
+            $('body').css("overflow","hidden");
+            $('.img img').attr('src',$(this).attr('src'));
+            $('#modal').show();
+            $('.overlay').show();
+        });
+            $('#modal .closebtn').on('click', function() {
+            $('.overlay').fadeOut();
+            $('body').css("overflow","auto")
+            $('#modal').hide();
+        });
+    </script>
+</body>
+
+</html>

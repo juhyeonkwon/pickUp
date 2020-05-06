@@ -36,7 +36,7 @@ router.post('/', upload.single('file') , async function(req, res, next) {
 
     //파라미터 정리..
     let params_coordi = [
-    user_id = parseInt(req.body.user_id),
+    user_id = parseInt(req.cookies.user_id),
     file = req.file.filename,
     situation1 = req.body.situation1,
     situation2 = req.body.situation2,
