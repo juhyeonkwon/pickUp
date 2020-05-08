@@ -19,7 +19,7 @@ router.post('/', async function(req, res) {
         val = ( num - 1 ) * 15;
     }
     
-    const [rows, field] = await connection.execute('SELECT coordi_id, file FROM coordinate order by coordi_id desc limit ?,15',[val]);
+    const [rows, field] = await connection.execute('SELECT coordi_id, file FROM coordinate order by coordi_id desc limit ?, 15',[val]);
     if (rows.length < 1){
         res.send('0');
     } else {

@@ -17,9 +17,8 @@
     <!-- 스타일 시트-->
     <link rel="stylesheet" href="assets/css/reset.css">
     <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="stylesheet" href="assets/css/viewer.min.css">
 
-    
+       
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
@@ -49,7 +48,6 @@
                     </h1>
                     <div class="login">
                         <a href="#">로그인</a>
-                        <a href="#">ID/PW찾기</a>
                         <a href="#">회원가입</a>
                     </div>
                     <div class="search" id="sc">
@@ -87,50 +85,53 @@
                     </ul>
                 </div>
                 <div class="photo clearfix">
-                    
-                   <ul id='photo' class = 'photo'>                     
+                    <ul>
                         <li v-for="coordi in coordis" class="item">
                             <img :src="coordi.file"  v-on:click="detail(coordi.coordi_id)">
-                        </li>                        
+                        </li>           
                     </ul>
 
-                    <aside id="modal">
-                        <a class="closebtn">&times;</a>
-                        <div class="infor">
-                        <div class="img">
-                         <img :src="file"/>
-                          <em class="name">
-                           <a href="#">
+                </div>
+            </div>
+        </div>        
+        <aside id="modal" class="modal">
+            <a id= "hideview" class="closebtn">&times;</a>
+            <div class="infor clearfix">
+                <div class="img">
+                   <img src="#">
+                    <em class="name">
+                        <a href="#">
                             <strong>
-                                {{nick_name}}
-                               </strong>
+                                {{ nick_name }}
+                            </strong>
                             <em>
-                                ({{email}})
-                              </em>
-                              </a>
-                              </em>
-                    
-                        </div>
-                        
-                        <div class="tag">
-                            <img src="assets/img/tag.jpg">
-                            <div class="tag_infor">
-                            <em> {{tag}} </em>
-                            </div>
-                        </div>
-                        <div class="btn report"><em>신고</em></div>
-                        <div class="btn erase"><em>삭제</em></div>
-                        <div class="btn rewrite"><em>수정</em></div>
-                        </div>
-                    </aside>
-                    <!--Vue.JS 기능 통합 코드
+                                {{ email }}
+                            </em>
+                        </a>
+                    </em>
+    
+                </div>
+    
+                <div class="tag">
+                    <img src="assets/img/tag.jpg">
+                    <div class="tag_infor">
+                        <em> {{ tag }}</em>
+                    </div>
+                </div>
+                <div class="btn report"><em>신고</em></div>
+                <div class="btn erase"><em>삭제</em></div>
+                <div class="btn rewrite"><em>수정</em></div>
+            </div>
+        </aside>
+    </section>    
+                 <!--Vue.JS 기능 통합 코드
                         만든이 : 권주현
                         날짜 : 20.05.06
                         서버로부터 데이터를 불러와서 이미지를 표시합니다
                     -->
                     <script>
                         var photo = new Vue({
-                            el: '.photo',
+                            el: '#coordi',
                             mounted:function() {
                                this.onload();
                                 
@@ -169,7 +170,7 @@
                                     this.user_id = response.data[0].user_id;
                                     this.file = 'http://121.1.71.52:3000/coordi/' + response.data[0].file;
                                     this.nick_name = response.data[0].nick_name;
-                                    this.email = response.data[0].email;
+                                    this.email = '(' + response.data[0].email + ')';
                                     this.tag = '';
 
 
@@ -184,20 +185,13 @@
                                     this.tag = this.tag + ' ' + response.data[0].color1;
                                     this.tag = this.tag + ' ' + response.data[0].color2;
 
-                                });
-
-                                $('body').css("overflow","hidden");
-                                $('#modal').show();
-                                $('.overlay').show();
+                                });                            
                             }
                         }
                     });
                     </script>
-                    
-                </div>
-            </div>
-        </div>
-    </section>
+
+
     <section id="upload">
         <div class="container">
             <div class="row">
@@ -235,46 +229,27 @@
     <script src="assets/js/jquery.min_1.12.4.js"></script>
     <script src="assets/js/modernizr-custom.js"></script>
     <script src="assets/js/ie-checker.js"></script>
-    <script src="assets/js/viewer.min.js"></script>
+    <script src="assets/js/viewer.js"></script>
     <!-- 자바스크립트 코드-->
     <script>
         /*네비게이션 */
         $('#sidebarCollapse').on('click', function() {
             $('#sidebar').addClass('active');
             $('.overlay').fadeIn();
-        });
-
-        $('.overlay').on('click', function() {
+            $('.overlay').on('click', function() {
             $('#sidebar').removeClass('active');
             $('.overlay').fadeOut();
-            $('body').css("overflow","auto")
-            $('#modal').hide();
         });
-
-        $('.closebtn').on('click', function() {
+        });
+       $('.closebtn').on('click', function() {
             $('#sidebar').removeClass('active');
             $('.overlay').fadeOut();
+            $('.overlay').off('click', function() {
+            $('#sidebar').removeClass('active');
+            $('.overlay').fadeOut();
+        });
 
         });
-        /*상세보기 */
-        $('.item img').on('click', function() {
-            $('body').css("overflow","hidden");
-            $('.img img').attr('src',$(this).attr('src'));
-            $('#modal').show();
-            $('.overlay').show();
-        });
-            $('.item img').on('click', function() {
-            $('body').css("overflow","hidden");
-            $('.img img').attr('src',$(this).attr('src'));
-            $('#modal').show();
-            $('.overlay').show();
-        });
-            $('#modal .closebtn').on('click', function() {
-            $('.overlay').fadeOut();
-            $('body').css("overflow","auto")
-            $('#modal').hide();
-        });
+
     </script>
-</body>
-
-</html>
+</body></html>

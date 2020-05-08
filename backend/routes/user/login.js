@@ -13,6 +13,8 @@ router.post('/', async function(req, res) {
     let email = req.body.email;
     let password = req.body.password;
 
+    console.log('login');
+
     //암호화
     let cipher = crypto.createCipher('aes192', 'key');
     cipher.update(password, 'utf8', 'base64');

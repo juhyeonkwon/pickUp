@@ -15,9 +15,16 @@
    <![endif]-->
     <title>옷좀골라줄래</title>
     <!-- 스타일 시트-->
-    <link rel="stylesheet" href="assets/css/reset.css">
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="./assets/css/reset.css">
+    <link rel="stylesheet" href="./assets/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.css">
+
+
+    <!--Vue-->
+    
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
 </head>
 
 <body>
@@ -68,6 +75,68 @@
             </div>
         </div>
     </div>
+    <div id="loginArea">
+        <div class="container table">
+            <div class="row table">
+                <div class="loginArea">
+                    <form class="reg-page">
+                        <div class="reg-header">
+                            <h2>로그인</h2>
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                <i class="fa fa-user"></i>
+                            </span>
+                            <input type="text" placeholder="아이디 / 이메일" class="form-control" name="ligin_user_id" autofocus="autofocus" v-model="email">
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                <i class="fa fa-user"></i>
+                            </span>
+                            <input type="password" placeholder="비밀번호" class="form-control" name="ligin_password" v-model="password">
+                        </div>
+                        <div class="row1">
+                            <div class="col-md-6 checkbox">
+                                <label><input type="checkbox" name="auto_login"> 로그인 상태 유지</label>
+                            </div>
+                            <div class="col-md-6">
+                                <button class="btn-u pull-right" data-loading-text="로그인 중..." v-on:click="submit()">로그인</button>
+                            </div>
+                        </div>
+                        <hr>
+                        <p>아이디나 비밀번호를 잊었을 때는, <a class="color-green" href="/#">여기</a>를 눌러주세요.</p>
+                        <p>회원 가입은 <a class="color-green" href="#">여기</a>에서 할 수 있습니다.
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 
+        login Vue 통합
+         5.6 권주현
+     -->
+    <script>
+        let login = new Vue({
+            el : '#loginArea',
+            data : {
+                email : '',
+                password : '',
+            },
+            methods : {
+                submit : function() {
+                    console.log('v-on')
+                    axios.post('http://121.1.71.52:3000/login', {email : this.email, password : this.password, withCredentials: true}, {'Content-Type' : 'application/x-www-form-urlencoded', withCredentials: true}).then(response => {
+                        alert(docuemnt.cookie);
+                        if(document.cookie) {
+                            alert('성공')
+                        };
+                    })
+                },
+            }
+        });
+    </script>
 
     <footer id="footer">
         <div id="footer_infor">

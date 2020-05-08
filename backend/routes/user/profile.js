@@ -13,7 +13,7 @@ router.post('/', function(req, res){
 
 //
 router.post('/view', async function(req, res){
-    let user_id = req.cookies.user_id;
+    let user_id = req.body.user_id;
     let con = await mysqlPromise.createConnection(dbconfig);
     const [rows, field] = await con.execute('select u.email, u.nick_name, c.coordi_id, c.file from users u INNER JOIN coordinate c on u.user_id = c.user_id WHERE u.user_id = ?',[ user_id ]);
 
