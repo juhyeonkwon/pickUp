@@ -9,8 +9,11 @@
     "async": "^3.2.0",
     "cookie-parser": "^1.4.5",
     "debug": "~2.6.9",
+    "ejs": "^3.1.2",
     "express": "~4.16.1",
     "express-fileupload": "^1.1.7-alpha.3",
+    "express-mysql-session": "^2.1.4",
+    "express-session": "^1.17.1",
     "http-errors": "~1.6.3",
     "image-size": "^0.8.3",
     "jade": "~1.11.0",
@@ -19,6 +22,7 @@
     "mysql": "^2.18.1",
     "mysql2": "^2.1.0",
     "named-placeholders": "^1.1.2",
+    "session-file-store": "^1.4.0",
     "sharp": "^0.25.2"
   }
 }

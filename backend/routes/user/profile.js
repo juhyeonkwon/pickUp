@@ -10,18 +10,43 @@ router.post('/', function(req, res){
     
 })
 
-
-//
 router.post('/view', async function(req, res){
+
+    let logined;
+    if(req.session.logined === true) {
+        logined = true;
+    } else {
+        logined = false;
+    }
+
+    console.log(req.body.user_id);
+
     let user_id = req.body.user_id;
     let con = await mysqlPromise.createConnection(dbconfig);
-    const [rows, field] = await con.execute('select u.email, u.nick_name, c.coordi_id, c.file from users u INNER JOIN coordinate c on u.user_id = c.user_id WHERE u.user_id = ?',[ user_id ]);
+    const [rows, field] = await con.execute('select u.email, u.nick_name, c.coordi_id, c.file from users u INNER JOIN coordinate c on u.user_id = c.user_id WHERE u.user_id = ? order by coordi_id desc ',[ user_id ]);
+
+    con.end();
 
     if(rows.length < 1){
         res.send('0');
+        return ;
     } else {
-        res.send(rows);
+        if(req.session.nick_name != undefined) {
+            res.json({
+                logined : true,
+                nick_name : req.session.nick_name,
+                rows : rows
+            });
+            return ;
+        } else {
+            res.json({
+                logined : false,
+                rows : rows
+            });
+            return ;
+        }
     }
+
 })
 
 //
@@ -58,12 +83,15 @@ router.post('/modify', function(req, res) {
           }            
           console.log(results);
     });
+
+    con.end();
     
 })
 
 
 router.post('/pw_check', async function(req, res) {
-    let id = parseInt(req.cookies.user_id)
+    console.log (req.body.user_id)
+    let id = parseInt(req.body.user_id)
     let password = req.body.password;
     let con = await mysqlPromise.createConnection(dbconfig);
     const [rows, field] = await con.execute('select password from users where user_id = ?', [ id ]);
@@ -83,6 +111,7 @@ router.post('/pw_check', async function(req, res) {
     } else {
         res.send('1');
     }
+    con.end();
 
 })
 

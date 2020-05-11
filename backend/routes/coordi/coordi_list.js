@@ -9,6 +9,8 @@ const dbconfig = require('../../database/dbconfig.js');
 //SELECT coordi_id, file FROM coordinate order by coordi_id desc limit 숫자, 숫자
 router.post('/', async function(req, res) {
 
+    console.log(req.body);
+
     let connection = await mysql.createConnection(dbconfig);
     let num = parseInt(req.body.num);
 
@@ -25,6 +27,7 @@ router.post('/', async function(req, res) {
     } else {
         res.send(rows);
     }
+    connection.end();
 
     return ;
 });

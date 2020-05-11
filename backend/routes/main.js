@@ -22,6 +22,8 @@ router.post('/', async function(req, res) {
     console.log(rows);
     res.send(rows);
 
+    connection.end();
+
 });
 
 

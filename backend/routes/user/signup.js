@@ -34,6 +34,8 @@ router.post('/signUpDupl', function(req, res, next) {
         });
       }     
     });
+
+    connection.end();
 });
 
 
@@ -62,6 +64,8 @@ router.post('/signUpDuplNick', function(req, res, next) {
       }          
       console.log(results);
     });   
+    connection.end();
+
 });
 
 
@@ -82,8 +86,6 @@ router.post('/', function(req, res) {
     nick_name = req.body.nick_name,
   ];
 
-  console.log(params[1]);
-
   let connection = mysql.createConnection(dbconfig);
 
   connection.query('INSERT INTO pickup.users(email , password, nick_name) VALUES (?,?,?)', params, function(err, results, fields) {
@@ -94,6 +96,9 @@ router.post('/', function(req, res) {
       res.send('err');
     }
   })
+
+  connection.end();
+
 });
 
 

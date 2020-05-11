@@ -9,6 +9,7 @@ const mysql = require('mysql2/promise');
 const dbconfig = require('../../database/dbconfig');
 
 
+
 router.post('/', async function(req, res) {
     let email = req.body.email;
     let password = req.body.password;
@@ -21,26 +22,71 @@ router.post('/', async function(req, res) {
     let chipheredOutput = cipher.final('base64');
     password = chipheredOutput;
 
-    params = [email];
+    params = [email, password];
 
     const connection = await mysql.createConnection(dbconfig);
     
-    const [rows, field] = await connection.execute('SELECT * FROM users WHERE email=?', params);
-    
-    if(rows.length < 1) {
-        res.send('err!');
-        return 0;
-    }
+    const [rows, field] = await connection.execute('SELECT * FROM users WHERE email=? and password = ?', params);
+
+    await connection.end();
     
     console.log(rows);
+
+    if(rows.length < 1) {
+        res.send('0');
+        return 0;
+    } else {
+        console.log('session 생성');
+        req.session.user_id = rows[0].user_id;
+        req.session.nick_name = rows[0].nick_name;
+        req.session.logined = true;
+
+        req.session.save(function() {
+            res.send('1');
+        })
+    }
+ 
     
+router.post('/check', function(req, res) {
+
+    if(req.session.logined === true) {
+        let param = {
+            nick_name : req.session.nick_name,
+            logined : req.session.logined
+        }
+        res.send(param);
+    } else {
+        res.send('0');
+    }
+
+})
+
+router.post('/logout', function(req, res) {
+    req.session.destroy(
+        function (err) {
+            if (err) {
+                console.log('logout err');
+                return;
+            }
+            console.log('logout');
+        });
+
+        res.send('logout!');
+})
+    
+    /* 쿠키
     if(rows[0].password === password) {
-        res.cookie('user_id', rows[0].user_id, { expires: new Date(Date.now() + 900000), httpOnly: true });
-        res.cookie('nick_name', rows[0].nick_name, { expires: new Date(Date.now() + 900000), httpOnly: true })
-        res.send('succes');
+        res.cookie('user_id', rows[0].user_id, { expires: new Date(Date.now() + 3600000), httpOnly: true });
+        res.cookie('nick_name', rows[0].nick_name, { expires: new Date(Date.now() + 3600000), httpOnly: true, encode : 'utf-8' })
+        res.send('succes');                                                         
     } else {
         res.send('0')
     } 
+    */
+
+    //세션
+
+    
     
     return ;
     

@@ -20,10 +20,14 @@ router.post('/detail_view', async function(req, res) {
 
     if(rows.length < 1) {
         res.send('0');
+        connection.end();
+
         return ;
     }
 
     res.send(rows);
+    connection.end();
+
     return ;
 
 });
@@ -42,15 +46,21 @@ router.post('/modify_view', async function(req, res) {
 
     if(rows[0].user_id != req.cookies.user_id) {
         res.send('0');
+        connection.end();
+
         return ;
     }
 
     if(rows.length < 1) {
         res.send('0');
+        connection.end();
+
         return ;
     }
 
     res.send(rows);
+    connection.end();
+
     return ;
 
 })
@@ -98,8 +108,11 @@ router.post('/modify', upload.single('file'), function(req, res) {
                             res.send('1');
                         }
                     });
+    connection.end();
 
      return ;    
+
+
 
 })
 
@@ -122,6 +135,9 @@ router.post('/delete', function(req, res){
             res.send('1');
         }
     });
+
+    connection.end();
+
 
     return ;
 
@@ -174,6 +190,8 @@ router.post('/report', async function(req, res) {
         });
      }
 
+     promiseCon.end();
+
      //해당 신고값 증가
      let connection = mysql.createConnection(dbconfig);
      let params3 = [req.body.coordi_id];
@@ -187,6 +205,8 @@ router.post('/report', async function(req, res) {
          }
      });
 
+
+     connection.end();
      return ;
 
 });

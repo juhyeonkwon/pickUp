@@ -68,10 +68,26 @@
     position: absolute;
     right:250px;
     bottom:8px;
+
 }
 .login a{
     margin-right: 10px;
     font-size:13px;
+}
+.login_after{
+    position:absolute;
+    right: 250px;
+    bottom:8px;
+    
+}
+.login_after li{
+    display: inline;
+    position: relative;
+    padding-right: 5px;
+    white-space: nowrap;
+}
+.login_session{
+    display: none;
 }
 /*검색 시작*/
 .search__input {

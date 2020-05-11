@@ -35,20 +35,6 @@ const resize = async (req) => {
     let dimensions = size('./static/coordi/' + req.file.filename);
     console.log(dimensions.width);
     console.log(dimensions.height);
-    let height;
-
-    if(dimensions.width * 1.4 <dimensions.height) {
-        if(dimensions.width > 1080) {
-            console.log('resize 1080이상인거 비율 수정');      
-            sharp('./static/coordi/' + req.file.filename).resize({width : 1080, height: parseInt(1080 * 1.4), position:"bottom"}).toFile('./static/coordi/resize' + req.file.filename);
-            return 'resize' + req.file.filename;
-        } else {
-            console.log('resize 비율 수정');      
-            height = dimensions.width * 1.4;
-            sharp('./static/coordi/' + req.file.filename).resize({width : dimensions.width, height: parseInt(height), position:"bottom"}).toFile('./static/coordi/resize' + req.file.filename);
-            return 'resize' + req.file.filename;
-        }
-    }
 
     if(dimensions.width > 1080) {
         //그냥 1080 넘은거
@@ -99,7 +85,7 @@ router.post('/', upload.single('file') ,async function(req, res, next) {
 
     //파라미터 정리..
     let params_coordi = [
-    user_id = parseInt(req.cookies.user_id),
+    user_id = parseInt(req.session.user_id),
     file = file,
     situation1 = req.body.situation1,
     situation2 = req.body.situation2,

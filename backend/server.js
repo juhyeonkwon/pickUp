@@ -14,7 +14,7 @@ const app = express();
 
 //static 파일 제공
 app.use(express.static('./static'));
-app.use(express.static('./public'));
+//app.use(express.static('./public'));
 
 
 
@@ -35,10 +35,24 @@ app.use(bodyParser.json());
 //url로만 접근시
 app.get('/hello', (req, res) => res.send('Hello'));
 
-app.set('view engine', 'jade');
+app.set('view engine', 'ejs');
+
+
 
 //쿠키
 app.use(cookieParser());
+
+//세션
+//세션...
+let session = require('express-session');
+let FileStore = require('session-file-store')(session);
+
+app.use(session({
+  secret : "pickpick1@31@3",
+  resave : false,
+  saveUninitialized : true,
+  store : new FileStore()
+}));
 
 
 /* 기본 세팅 끝 */

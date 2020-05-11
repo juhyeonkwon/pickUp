@@ -11,9 +11,8 @@
             hideButton: $("#hideview"),
             image: $(".item img")
         };
-
         // 보이기, 숨기기 버튼 활성화
-        $selector.image.on('click', showView);
+        $(document).on('click',".item img",showView);
         $selector.hideButton.on("click", hideView);
         
 
@@ -49,6 +48,7 @@
         // view 보이기
         function showView() {
             setimage($(this));
+            console.log($(this));
             $selector.body.addClass("modal_on");
             $selector.overlay.fadeIn();
             $selector.Modal.show()
@@ -59,7 +59,6 @@
         function hideView() {
             $selector.overlay.fadeOut();
             $selector.body.removeClass("modal_on");
-            $selector.overlay.off('click', hideView);
             $selector.Modal.hide()
         }
 
