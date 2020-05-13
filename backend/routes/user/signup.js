@@ -25,13 +25,9 @@ router.post('/signUpDupl', function(req, res, next) {
         })
       }
       if(results.length) {
-        res.send({
-          "value" : 0       //아이디가 존재할시
-        });
+        res.send(false);    //email 존재
       } else {
-        res.send({
-          "value" : 1       //아이디가 존재하지 않을시
-        });
+        res.send(true);     //존재 안할때
       }     
     });
 
@@ -41,11 +37,11 @@ router.post('/signUpDupl', function(req, res, next) {
 
 //닉네임 중복체크
 router.post('/signUpDuplNick', function(req, res, next) {
-    let nick_name = req.body.nick_name;
-    console.log(nick_name);
+    let nickname = req.body.nickname;
+    console.log(nickname);
 
     let connection = mysql.createConnection(dbconfig);
-    connection.query('SELECT * FROM users WHERE nick_name=?', nick_name, function(err, results, fields) {
+    connection.query('SELECT * FROM users WHERE nick_name=?', nickname, function(err, results, fields) {
       if(err) {
         console.log("error occured", err);
         res.send({
@@ -54,13 +50,9 @@ router.post('/signUpDuplNick', function(req, res, next) {
         })
       }
       if(results.length) {
-        res.send({
-          "value" : 0       //해당 닉네임이 존재할시
-        });
+        res.send(false);  //닉네임 존재
       } else {
-        res.send({
-          "value" : 1       //해당 닉네임이 존재하지 않을시
-        });
+        res.send(true);
       }          
       console.log(results);
     });   
@@ -72,7 +64,9 @@ router.post('/signUpDuplNick', function(req, res, next) {
 
 //회원가입..
 router.post('/', function(req, res) {
-  let password = req.body.password;
+
+  console.log(req.body);
+  let password = req.body.opassword;
 
   //암호화
   let cipher = crypto.createCipher('aes192', 'key');
@@ -83,7 +77,7 @@ router.post('/', function(req, res) {
   let params = [
     email = req.body.email,
     password = password,
-    nick_name = req.body.nick_name,
+    nickname = req.body.nickname,
   ];
 
   let connection = mysql.createConnection(dbconfig);
@@ -91,9 +85,9 @@ router.post('/', function(req, res) {
   connection.query('INSERT INTO pickup.users(email , password, nick_name) VALUES (?,?,?)', params, function(err, results, fields) {
     console.log(err);
     if(results != undefined) {
-      res.send(results);
+      res.send('<script type="text/javascript">alert("회원가입 성공, 로그인 해주세요"); history.go(-2)</script>');
     } else {
-      res.send('err');
+      res.send('<script type="text/javascript">alert("오류발생"); history.go(-1)</script>');
     }
   })
 

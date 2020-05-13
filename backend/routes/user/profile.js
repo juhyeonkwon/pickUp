@@ -25,6 +25,8 @@ router.post('/view', async function(req, res){
     let con = await mysqlPromise.createConnection(dbconfig);
     const [rows, field] = await con.execute('select u.email, u.nick_name, c.coordi_id, c.file from users u INNER JOIN coordinate c on u.user_id = c.user_id WHERE u.user_id = ? order by coordi_id desc ',[ user_id ]);
 
+    const [rows2, filed] = await con.execute('select email, nick_name from users where user_id = ?', [user_id]);
+
     con.end();
 
     if(rows.length < 1){
@@ -35,13 +37,16 @@ router.post('/view', async function(req, res){
             res.json({
                 logined : true,
                 nick_name : req.session.nick_name,
-                rows : rows
+                rows : rows,
+                user : rows2
             });
             return ;
         } else {
             res.json({
                 logined : false,
-                rows : rows
+                rows : rows,
+                user : rows2
+
             });
             return ;
         }
