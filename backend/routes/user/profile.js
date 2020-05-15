@@ -29,7 +29,7 @@ router.post('/view', async function(req, res){
 
     con.end();
 
-    if(rows.length < 1){
+    if(rows2.length < 1){
         res.send('0');
         return ;
     } else {

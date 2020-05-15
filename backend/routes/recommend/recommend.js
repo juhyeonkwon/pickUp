@@ -17,7 +17,7 @@ router.post('/situation', async function(req, res) {
     if(num == 1){
         val = 0;
     } else {
-        val = ( num - 1 ) * 10;
+        val = ( num - 1 ) * 20;
     }
 
     let params = [
@@ -28,7 +28,7 @@ router.post('/situation', async function(req, res) {
 
     const connection = await mysqlPromise.createConnection(dbconfig);
 
-    const [rows, field] = await connection.execute('SELECT * FROM coordinate where situation1 = ? or situation2 = ? order by score desc limit ?, 10', params);
+    const [rows, field] = await connection.execute('SELECT * FROM coordinate where situation1 = ? or situation2 = ? order by score desc limit ?, 20', params);
 
     if (rows.length < 1){
         res.send('0');
@@ -51,7 +51,7 @@ router.post('/season', async function(req, res) {
     if(num == 1){
         val = 0;
     } else {
-        val = ( num - 1 ) * 10;
+        val = ( num - 1 ) * 20;
     }
 
     let params = [
@@ -62,7 +62,7 @@ router.post('/season', async function(req, res) {
 
     const connection = await mysqlPromise.createConnection(dbconfig);
 
-    const [rows, field] = await connection.execute('SELECT * FROM coordinate where season1 = ? or season2 = ? order by score desc limit ?, 10', params);
+    const [rows, field] = await connection.execute('SELECT * FROM coordinate where season1 = ? or season2 = ? order by week_score desc limit ?, 20', params);
 
     if (rows.length < 1){
         res.send('0');

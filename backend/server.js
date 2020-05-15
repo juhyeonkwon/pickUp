@@ -84,7 +84,7 @@ let coordi_list = require('./routes/coordi/coordi_list.js')
 let worldcup = require('./routes/worldcup/worldcup.js');
 
 //추천기능
-let recommand = require('./routes/recommand/recommand');
+let recommend = require('./routes/recommend/recommend');
 
 //라우팅
 app.use('/test', test);
@@ -97,7 +97,7 @@ app.use('/coordi_list', coordi_list);
 app.use('/profile', profile);
 app.use('/withdrawal', withdrawal);
 app.use('/worldcup', worldcup);
-app.use('/recommand', recommand);
+app.use('/recommend', recommend);
 
 
 

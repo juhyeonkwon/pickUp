@@ -19,7 +19,6 @@ router.post('/', async function(req, res) {
 
     const [rows, field] = await connection.execute('SELECT coordi_id, file, situation1, situation2 from coordinate order by coordi_id desc limit 4');
 
-    console.log(rows);
     res.send(rows);
 
     connection.end();

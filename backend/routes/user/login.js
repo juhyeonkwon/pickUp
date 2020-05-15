@@ -52,7 +52,8 @@ router.post('/check', function(req, res) {
     if(req.session.logined === true) {
         let param = {
             nick_name : req.session.nick_name,
-            logined : req.session.logined
+            logined : req.session.logined,
+            user_id : req.session.user_id
         }
         res.send(param);
     } else {
