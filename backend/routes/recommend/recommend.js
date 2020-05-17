@@ -75,7 +75,7 @@ router.post('/season', async function(req, res) {
 });
 
 //아이템 별 추천
-//SELECT * FROM coordinate where (item1 = ? or item2 = ? or item3 = ?) AND (color1 = ? or color2 = ?) order by score desc limit ?, 10
+//SELECT * FROM coordinate where (item1 = ? AND color1 = ?) or ( item2 = ? AND color2 = ?) or ( item3 = ? AND color3 = ?)  order by score desc limit ?, 20
 router.post('/item', async function(req, res) {
     let item = req.body.item;
     let color = req.body.color;
@@ -86,18 +86,19 @@ router.post('/item', async function(req, res) {
     if(num == 1){
         val = 0;
     } else {
-        val = ( num - 1 ) * 10;
+        val = ( num - 1 ) * 20;
     }
 
     let params = [
-        item, item, item,
-        color, color,
+        item, color, 
+        item, color,
+        item, color,
         val
     ];
 
     const connection = await mysqlPromise.createConnection(dbconfig);
 
-    const [rows, field] = await connection.execute('SELECT * FROM coordinate where (item1 = ? or item2 = ? or item3 = ?) AND (color1 = ? or color2 = ?) order by score desc limit ?, 10', params);
+    const [rows, field] = await connection.execute('SELECT * FROM coordinate where (item1 = ? AND color1 = ?) or ( item2 = ? AND color2 = ?) or ( item3 = ? AND color3 = ?)  order by score desc limit ?, 20', params);
 
     if (rows.length < 1){
         res.send('0');
