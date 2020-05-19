@@ -33,7 +33,7 @@ router.post('/score', function(req, res) {
     
     let connection = mysql.createConnection(dbconfig);
 
-    connection.query('UPDATE coordinate SET score = score + 1 WHERE coordi_id = ?', [ req.body.coordi_id ], function(err, results, field) {
+    connection.query('UPDATE coordinate SET score = score + 1, week_score = week_score + 1, month_score = month_score + 1 WHERE coordi_id = ?', [ req.body.coordi_id ], function(err, results, field) {
         if(err) {
             console.log("error occured", err);
             res.send({
