@@ -46,12 +46,9 @@ router.post('/score', function(req, res) {
           } else {
             res.send('1');
           }          
-          console.log(results);
     })
 
     return ;
 });
-
-
 
 module.exports = router;

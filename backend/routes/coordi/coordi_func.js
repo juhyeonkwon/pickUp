@@ -16,7 +16,7 @@ router.post('/detail_view', async function(req, res) {
 
     let connection = await mysqlPromise.createConnection(dbconfig);
 
-    const [rows, field] = await connection.execute('SELECT c.coordi_id, c.user_id, u.email ,c.file, c.situation1, c.situation2, c.color1, c.color2, c.season1, c.season2, c.item1, c.item2, c.item3, u.nick_name FROM coordinate c INNER JOIN  users u on u.user_id = c.user_id WHERE coordi_id = ?', params);
+    const [rows, field] = await connection.execute('SELECT c.coordi_id, c.user_id, u.email ,c.file, c.situation1, c.situation2, c.color1, c.color2, c.season1, c.season2, c.item1, c.item2, c.item3, c.memo, u.nick_name FROM coordinate c INNER JOIN  users u on u.user_id = c.user_id WHERE coordi_id = ?', params);
 
     if(rows.length < 1) {
         res.send('0');
@@ -40,7 +40,7 @@ router.post('/modify_view', async function(req, res) {
 
     let connection = await mysqlPromise.createConnection(dbconfig);
 
-    const [rows, field] = await connection.execute('SELECT user_id,  file, situation1, situation2, color1, color2, season1, season2, item1, item2, item3 FROM coordinate WHERE coordi_id = ?', params)
+    const [rows, field] = await connection.execute('SELECT user_id,  file, situation1, situation2, color1, color2, season1, season2, item1, item2, item3, memo FROM coordinate WHERE coordi_id = ?', params)
 
     //다른사람이 수정하려고 했을때 오류를 냅니다...
 
@@ -94,12 +94,13 @@ router.post('/modify', upload.single('file'), function(req, res) {
         item1 = req.body.item1,
         item2 = req.body.item2,
         item3 = req.body.item3,
+        memo = req.body.memo,
         coordi_id = parseInt(req.body.coordi_id)
     ];
 
     let connection = mysql.createConnection(dbconfig);
 
-    connection.query('UPDATE coordinate set file = ?, situation1 = ?, situation2 = ?, color1 = ? , color2 = ?, season1 = ?, season2 = ?, item1 = ?, item2 = ?, item3 = ? WHERE coordi_id = ?', 
+    connection.query('UPDATE coordinate set file = ?, situation1 = ?, situation2 = ?, color1 = ? , color2 = ?, season1 = ?, season2 = ?, item1 = ?, item2 = ?, item3 = ?, memo = ? WHERE coordi_id = ?', 
                     params, function(err, result) {
                         if(result.affectedRows === 0) {
                             console.log(err);
