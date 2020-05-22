@@ -120,25 +120,46 @@ router.post('/modify', upload.single('file'), function(req, res) {
 
 //코디 delete
 //DELETE FROM coordinate WHERE coordi_id = ?
-router.post('/delete', function(req, res){
+router.post('/delete', async function(req, res){
     //body에서 coordi_id를 가져온다
     //쿼리를 진행하는데 삭제쿼리를 진행하셔야합니다
     //삭제 성공시 1을 실패시 0을 전달해야 합니다.
-    let connection = mysql.createConnection(dbconfig);
 
-    let params = [req.body.coordi_id];
+    let promiseCon = await mysqlPromise.createConnection(dbconfig);
 
-    connection.query('DELETE FROM coordinate WHERE coordi_id = ?', params, function(err, result) {
-        if(result.affectedRows === 0) {
-            console.log(err);
-            res.send('0');
-        } else {
-            res.send('1');
-        }
-    });
+    const [rows, field] = await promiseCon.execute('SELECT user_id FROM coordinate WHERE coordi_id = ?', [req.body.coordi_id]);
 
-    connection.end();
+    if(rows[0].user_id != req.session.user_id) {
+        res.send('-1');
+        promiseCon.end();
 
+        return ;
+    } else {
+        let connection = mysql.createConnection(dbconfig);
+
+        let params = [req.body.coordi_id];
+    
+        connection.query('DELETE FROM reports WHERE coordi_id = ?', params, function(err, result){
+            if(err) {
+                console.log(err);
+                res.send('0');
+                return ;
+            } else {
+                console.log('delete reports')
+            }
+        })
+    
+        connection.query('DELETE FROM coordinate WHERE coordi_id = ?', params, function(err, result) {
+            if(err) {
+                console.log(err);
+                res.send('0');
+            } else {
+                res.send('1');
+            }
+        });
+    
+        connection.end();
+    }
 
     return ;
 
@@ -156,12 +177,16 @@ router.post('/report', async function(req, res) {
       * 로그인을해서 cookie 값이 있어야 신고가 가능합니다.
       * 신고시 테이블에 정보가 들어가서 user_id, coordi_id에 대한 정보가 있을시 오류를 내게 합니다.
       */
+      if(req.session.logined != true) {
+          res.send('not logged');
+          return ;
+      }
 
 
      let promiseCon = await mysqlPromise.createConnection(dbconfig);
 
      let params1 = [
-         user_id = parseInt(req.cookies.user_id),
+         user_id = parseInt(req.session.user_id),
          coordi_id = parseInt(req.body.coordi_id)
      ]
 
@@ -177,12 +202,12 @@ router.post('/report', async function(req, res) {
         //없을시
         let connection = mysql.createConnection(dbconfig);
         let params2 = [
-            user_id = parseInt(req.cookies.user_id),
+            user_id = parseInt(req.session.user_id),
             coordi_id = parseInt(req.body.coordi_id)
         ]
 
         connection.query('insert into reports values (?, ?)', params2, function(err, result){
-            if(result.affectedRows === 0) {
+            if(result === undefined) {
                 console.log(err);
                 res.send('0');
             } else {
@@ -198,7 +223,7 @@ router.post('/report', async function(req, res) {
      let params3 = [req.body.coordi_id];
  
      connection.query('update coordinate set report = report + 1 WHERE coordi_id = ?', params3, function(err, result) {
-         if(result.affectedRows === 0) {
+        if(result.affectedRows === 0) {
              console.log(err);
              res.send('0');
          } else {
