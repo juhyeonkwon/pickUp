@@ -16,7 +16,7 @@ router.post('/detail_view', async function(req, res) {
 
     let connection = await mysqlPromise.createConnection(dbconfig);
 
-    const [rows, field] = await connection.execute('SELECT c.coordi_id, c.user_id, u.email ,c.file, c.situation1, c.situation2, c.color1, c.color2, c.season1, c.season2, c.item1, c.item2, c.item3, c.memo, u.nick_name FROM coordinate c INNER JOIN  users u on u.user_id = c.user_id WHERE coordi_id = ?', params);
+    const [rows, field] = await connection.execute('SELECT c.coordi_id, c.user_id, u.email ,c.file, c.situation1, c.situation2, c.color1, c.color2, c.color3, c.season1, c.season2, c.item1, c.item2, c.item3, c.memo, u.nick_name FROM coordinate c INNER JOIN  users u on u.user_id = c.user_id WHERE coordi_id = ?', params);
 
     if(rows.length < 1) {
         res.send('0');

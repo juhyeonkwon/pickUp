@@ -17,7 +17,7 @@ router.post('/situation', async function(req, res) {
     if(num == 1){
         val = 0;
     } else {
-        val = ( num - 1 ) * 20;
+        val = ( num - 1 ) * 10;
     }
 
     let params = [
@@ -28,17 +28,22 @@ router.post('/situation', async function(req, res) {
 
     const connection = await mysqlPromise.createConnection(dbconfig);
 
-    const [rows, field] = await connection.execute('SELECT * FROM coordinate where situation1 = ? or situation2 = ? order by score desc limit ?, 20', params);
+    const [rows, field] = await connection.execute('SELECT * FROM coordinate where situation1 = ? or situation2 = ? order by score desc limit ?, 10', params);
+    const [rows2, field2] = await connection.execute('SELECT * FROM coordinate where situation1 = ? or situation2 = ? order by week_score desc limit ?, 10', params);
+    const [rows3, field3] = await connection.execute('SELECT * FROM coordinate where situation1 = ? or situation2 = ? order by month_score desc limit ?, 10', params);
+
+    connection.end();
 
     if (rows.length < 1){
         res.send('0');
     } else {
-        res.send(rows);
+        res.send({day : rows, week : rows2, month : rows3 });
     }
 
-    return ;
-    
+    return ;    
 });
+
+
 
 //계절별 추천
 //SELECT * FROM coordinate where season1 = ? or season2 = ? order by score desc limit 0, 10
@@ -51,7 +56,7 @@ router.post('/season', async function(req, res) {
     if(num == 1){
         val = 0;
     } else {
-        val = ( num - 1 ) * 20;
+        val = ( num - 1 ) * 10;
     }
 
     let params = [
@@ -62,12 +67,16 @@ router.post('/season', async function(req, res) {
 
     const connection = await mysqlPromise.createConnection(dbconfig);
 
-    const [rows, field] = await connection.execute('SELECT * FROM coordinate where season1 = ? or season2 = ? order by week_score desc limit ?, 20', params);
+    const [rows, field] = await connection.execute('SELECT * FROM coordinate where season1 = ? or season2 = ? order by score desc limit ?, 10', params);
+    const [rows2, field2] = await connection.execute('SELECT * FROM coordinate where season1 = ? or season2 = ? order by week_score desc limit ?, 10', params);
+    const [rows3, field3] = await connection.execute('SELECT * FROM coordinate where season1 = ? or season2 = ? order by month_score desc limit ?, 10', params);
+
+    connection.end();
 
     if (rows.length < 1){
         res.send('0');
     } else {
-        res.send(rows);
+        res.send({day : rows, week : rows2, month : rows3 });
     }
 
     return ;
@@ -86,7 +95,7 @@ router.post('/item', async function(req, res) {
     if(num == 1){
         val = 0;
     } else {
-        val = ( num - 1 ) * 20;
+        val = ( num - 1 ) * 10;
     }
 
     let params = [
@@ -98,12 +107,16 @@ router.post('/item', async function(req, res) {
 
     const connection = await mysqlPromise.createConnection(dbconfig);
 
-    const [rows, field] = await connection.execute('SELECT * FROM coordinate where (item1 = ? AND color1 = ?) or ( item2 = ? AND color2 = ?) or ( item3 = ? AND color3 = ?)  order by score desc limit ?, 20', params);
+    const [rows, field] = await connection.execute('SELECT * FROM coordinate where (item1 = ? AND color1 = ?) or ( item2 = ? AND color2 = ?) or ( item3 = ? AND color3 = ?)  order by score desc limit ?, 10', params);
+    const [rows2, field2] = await connection.execute('SELECT * FROM coordinate where (item1 = ? AND color1 = ?) or ( item2 = ? AND color2 = ?) or ( item3 = ? AND color3 = ?)  order by week_score desc limit ?, 10', params);
+    const [rows3, field3] = await connection.execute('SELECT * FROM coordinate where (item1 = ? AND color1 = ?) or ( item2 = ? AND color2 = ?) or ( item3 = ? AND color3 = ?)  order by month_score desc limit ?, 10', params);
+
+    connection.end();
 
     if (rows.length < 1){
         res.send('0');
     } else {
-        res.send(rows);
+        res.send({day : rows, week : rows2, month : rows3 });
     }
 
     return ;

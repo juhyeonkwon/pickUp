@@ -48,7 +48,6 @@ router.post('/', async function(req, res) {
  
     
 router.post('/check', function(req, res) {
-
     if(req.session.logined === true) {
         let param = {
             nick_name : req.session.nick_name,
