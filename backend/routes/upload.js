@@ -22,7 +22,7 @@ let storage = multer.diskStorage({
         cb(null, './static/coordi/')
     },
     filename: function(req, file, cb) {
-        cb(null, Date.now() + '-' + file.originalname) 
+        cb(null, Date.now() + '-' + file.originalname.slice(0, 20)) 
     }
 })
 
@@ -30,9 +30,7 @@ let storage = multer.diskStorage({
 let upload = multer({ storage : storage})
 
 const resize = async (req, res) => {
-    if(req.file.filename === undefined) {
-        res.send('0');
-    }
+    
     //이미지 리사이즈
     let size = require('image-size');
     let dimensions = size('./static/coordi/' + req.file.filename);
