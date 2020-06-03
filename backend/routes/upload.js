@@ -45,34 +45,6 @@ const resize = async (req, res) => {
         //그외에는 그냥 저장
         return req.file.filename;
     }
-
-
-/*
-    if(dimensions.width > 1080) { 
-        sharp('./static/coordi/' + req.file.filename).resize({width:1080}).toFile('./static/coordi/resize' + req.file.filename);
-        
-        dimensions = size('./static/coordi/resize' + req.file.filename);
-
-        if((dimensions.width * 1.4) < dimensions.height) {
-            console.log('resize 1080이상인거 비율 수정');      
-            height = 1080 * 1.4;            
-            sharp('./static/coordi/' + req.file.filename).resize({width : dimensions.width, height: parseInt(height), position:"bottom"}).toFile('./static/coordi/resize2' + req.file.filename);
-            return 'resize2' + req.file.filename;
-        } else {
-            console.log('resize 1080이상인거 그대로');      
-            return 'resize' + req.file.filename;
-        }
-    } else {
-        if(dimensions.width * 1.4 < dimensions.height) {
-            console.log('hi')
-            height = dimensions.width * 1.4;
-            sharp('./static/coordi/' + req.file.filename).resize({width : dimensions.width, height: parseInt(height), position:"bottom"}).toFile('./static/coordi/resize' + req.file.filename);
-            return 'resize' + req.file.filename;
-        } else {
-            return req.file.filename;
-        }
-    }
-    */
     
 }
 

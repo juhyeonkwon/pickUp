@@ -51,7 +51,10 @@ app.use(session({
   secret : "pickpick1@31@3",
   resave : false,
   saveUninitialized : true,
-  store : new FileStore()
+  store : new FileStore(),
+  cookie: {
+    maxAge : 1000 * 60 * 60
+  }
 }));
 
 

@@ -68,7 +68,7 @@ router.post('/modify', function(req, res) {
     let params = [
         nick_name = nick_name,
         password = password,
-        user_id = parseInt(req.cookies.user_id)
+        user_id = req.session.user_id
     ]
 
     let con = mysql.createConnection(dbconfig);

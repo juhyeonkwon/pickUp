@@ -68,6 +68,14 @@ router.post('/', function(req, res) {
   console.log(req.body);
   let password = req.body.opassword;
 
+  //정규식 체크..
+  let check = check_mail(req.body.email);
+  if(!check) {
+    console.log('err');
+    res.send('<script type="text/javascript">alert("오류발생"); history.go(-1)</script>');
+    return ;
+  }
+
   //암호화
   let cipher = crypto.createCipher('aes192', 'key');
   cipher.update(password, 'utf8', 'base64');
@@ -95,6 +103,12 @@ router.post('/', function(req, res) {
 
 });
 
+
+function check_mail(email) {
+  let exp = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+
+  return exp.test(email);
+}
 
 /*
 router.post('/', function(req, res, next) {

@@ -18,10 +18,10 @@ router.post('/', async function(req, res) {
     if(num == 1){
         val = 0;
     } else {
-        val = ( num - 1 ) * 15;
+        val = ( num - 1 ) * 20;
     }
     
-    const [rows, field] = await connection.execute('SELECT coordi_id, file FROM coordinate order by coordi_id desc limit ?, 15',[val]);
+    const [rows, field] = await connection.execute('SELECT coordi_id, file FROM coordinate order by coordi_id desc limit ?, 20',[val]);
     if (rows.length < 1){
         res.send('0');
     } else {
@@ -42,10 +42,10 @@ router.post('/old', async function(req, res){
     if(num == 1){
         val = 0;
     } else {
-        val = ( num - 1 ) * 15;
+        val = ( num - 1 ) * 20;
     }
     
-    const [rows, field] = await connection.execute('SELECT coordi_id, file FROM coordinate order by coordi_id asc limit ?, 15',[val]);
+    const [rows, field] = await connection.execute('SELECT coordi_id, file FROM coordinate order by coordi_id asc limit ?, 20',[val]);
     if (rows.length < 1){
         res.send('0');
     } else {

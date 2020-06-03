@@ -70,7 +70,7 @@ router.post('/logout', function(req, res) {
             }
             console.log('logout');
         });
-
+        res.clearCookie('connect.sid');
         res.send('logout!');
 })
     

@@ -125,9 +125,17 @@ router.post('/delete', async function(req, res){
     //쿼리를 진행하는데 삭제쿼리를 진행하셔야합니다
     //삭제 성공시 1을 실패시 0을 전달해야 합니다.
 
+    if(req.session.user_id === undefined) {
+        res.send('-1');
+        return ;
+    }
+
     let promiseCon = await mysqlPromise.createConnection(dbconfig);
 
     const [rows, field] = await promiseCon.execute('SELECT user_id FROM coordinate WHERE coordi_id = ?', [req.body.coordi_id]);
+
+
+
 
     if(rows[0].user_id != req.session.user_id) {
         res.send('-1');

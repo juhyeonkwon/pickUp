@@ -29,6 +29,27 @@ router.post('/', async function(req, res) {
     }
 });
 
+//SELECT * FROM pickup.coordinate where situation1 = ? or situation2 = ? ORDER BY RAND() LIMIT ?
+router.post('/season', async function(req, res) {
+  params = [
+      season1 = req.body.season,
+      season2 = req.body.season,
+      num = parseInt(req.body.num)
+  ];
+
+  let connection = await mysqlPromise.createConnection(dbconfig);
+
+  const [rows, field] = await connection.execute('SELECT coordi_id, user_id, file FROM pickup.coordinate where season1 = ? or season2 = ? ORDER BY RAND() LIMIT ?', params);
+
+  if(rows.length < 1) {
+      res.send('0');
+      return ;
+  } else {
+      res.send(rows);
+      return ;
+  }
+});
+
 router.post('/score', function(req, res) {
     
     let connection = mysql.createConnection(dbconfig);
