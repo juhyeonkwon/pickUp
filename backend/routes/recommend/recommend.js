@@ -10,7 +10,7 @@ let mysqlPromise = require('mysql2/promise');
 //SELECT * FROM coordinate where situation1 = ? or situation2 = ? order by score desc limit 0, 10
 router.post('/situation', async function(req, res) {
     let situation = req.body.situation;
-
+    let gender = req.body.gender;
     let num = parseInt(req.body.num);
 
     let val;
@@ -23,14 +23,15 @@ router.post('/situation', async function(req, res) {
     let params = [
         situation,
         situation,
+        gender,
         val
     ]
 
     const connection = await mysqlPromise.createConnection(dbconfig);
 
-    const [rows, field] = await connection.execute('SELECT * FROM coordinate where situation1 = ? or situation2 = ? order by score desc limit ?, 10', params);
-    const [rows2, field2] = await connection.execute('SELECT * FROM coordinate where situation1 = ? or situation2 = ? order by week_score desc limit ?, 10', params);
-    const [rows3, field3] = await connection.execute('SELECT * FROM coordinate where situation1 = ? or situation2 = ? order by month_score desc limit ?, 10', params);
+    const [rows, field] = await connection.execute('SELECT * FROM coordinate where (situation1 = ? or situation2 = ?) and gender = ? order by score desc limit ?, 10', params);
+    const [rows2, field2] = await connection.execute('SELECT * FROM coordinate where (situation1 = ? or situation2 = ?) and gender = ? order by week_score desc limit ?, 10', params);
+    const [rows3, field3] = await connection.execute('SELECT * FROM coordinate where(situation1 = ? or situation2 = ?) and gender = ? order by month_score desc limit ?, 10', params);
 
     connection.end();
 
@@ -49,7 +50,7 @@ router.post('/situation', async function(req, res) {
 //SELECT * FROM coordinate where season1 = ? or season2 = ? order by score desc limit 0, 10
 router.post('/season', async function(req, res) {
     let season = req.body.season;
-
+    let gender = req.body.gender;
     let num = parseInt(req.body.num);
 
     let val;
@@ -62,14 +63,15 @@ router.post('/season', async function(req, res) {
     let params = [
         season,
         season,
+        gender,
         val
     ];
 
     const connection = await mysqlPromise.createConnection(dbconfig);
 
-    const [rows, field] = await connection.execute('SELECT * FROM coordinate where season1 = ? or season2 = ? order by score desc limit ?, 10', params);
-    const [rows2, field2] = await connection.execute('SELECT * FROM coordinate where season1 = ? or season2 = ? order by week_score desc limit ?, 10', params);
-    const [rows3, field3] = await connection.execute('SELECT * FROM coordinate where season1 = ? or season2 = ? order by month_score desc limit ?, 10', params);
+    const [rows, field] = await connection.execute('SELECT * FROM coordinate where (season1 = ? or season2 = ?) and gender = ? order by score desc limit ?, 10', params);
+    const [rows2, field2] = await connection.execute('SELECT * FROM coordinate where (season1 = ? or season2 = ?) and gender = ? order by week_score desc limit ?, 10', params);
+    const [rows3, field3] = await connection.execute('SELECT * FROM coordinate where (season1 = ? or season2 = ?) and gender = ? order by month_score desc limit ?, 10', params);
 
     connection.end();
 
@@ -88,6 +90,7 @@ router.post('/season', async function(req, res) {
 router.post('/item', async function(req, res) {
     let item = req.body.item;
     let color = req.body.color;
+    let gender = req.body.gender;
 
     let num = parseInt(req.body.num);
 
@@ -102,14 +105,15 @@ router.post('/item', async function(req, res) {
         item, color, 
         item, color,
         item, color,
+        gender,
         val
     ];
 
     const connection = await mysqlPromise.createConnection(dbconfig);
 
-    const [rows, field] = await connection.execute('SELECT * FROM coordinate where (item1 = ? AND color1 = ?) or ( item2 = ? AND color2 = ?) or ( item3 = ? AND color3 = ?)  order by score desc limit ?, 10', params);
-    const [rows2, field2] = await connection.execute('SELECT * FROM coordinate where (item1 = ? AND color1 = ?) or ( item2 = ? AND color2 = ?) or ( item3 = ? AND color3 = ?)  order by week_score desc limit ?, 10', params);
-    const [rows3, field3] = await connection.execute('SELECT * FROM coordinate where (item1 = ? AND color1 = ?) or ( item2 = ? AND color2 = ?) or ( item3 = ? AND color3 = ?)  order by month_score desc limit ?, 10', params);
+    const [rows, field] = await connection.execute('SELECT * FROM coordinate where ((item1 = ? AND color1 = ?) or ( item2 = ? AND color2 = ?) or ( item3 = ? AND color3 = ?)) and gender = ?  order by score desc limit ?, 10', params);
+    const [rows2, field2] = await connection.execute('SELECT * FROM coordinate where ((item1 = ? AND color1 = ?) or ( item2 = ? AND color2 = ?) or ( item3 = ? AND color3 = ?)) and gender = ?  order by week_score desc limit ?, 10', params);
+    const [rows3, field3] = await connection.execute('SELECT * FROM coordinate where ((item1 = ? AND color1 = ?) or ( item2 = ? AND color2 = ?) or ( item3 = ? AND color3 = ?)) and gender = ?  order by month_score desc limit ?, 10', params);
 
     connection.end();
 

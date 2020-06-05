@@ -13,12 +13,13 @@ router.post('/', async function(req, res) {
     params = [
         situation1 = req.body.situation,
         situation2 = req.body.situation,
+        gender = req.body.gender,
         num = parseInt(req.body.num)
     ];
 
     let connection = await mysqlPromise.createConnection(dbconfig);
 
-    const [rows, field] = await connection.execute('SELECT coordi_id, user_id, file FROM pickup.coordinate where situation1 = ? or situation2 = ? ORDER BY RAND() LIMIT ?', params);
+    const [rows, field] = await connection.execute('SELECT coordi_id, user_id, file FROM pickup.coordinate where (situation1 = ? or situation2 = ?) AND gender = ? ORDER BY RAND() LIMIT ?', params);
 
     if(rows.length < 1) {
         res.send('0');
@@ -34,12 +35,13 @@ router.post('/season', async function(req, res) {
   params = [
       season1 = req.body.season,
       season2 = req.body.season,
+      gender = req.body.gender,
       num = parseInt(req.body.num)
   ];
 
   let connection = await mysqlPromise.createConnection(dbconfig);
 
-  const [rows, field] = await connection.execute('SELECT coordi_id, user_id, file FROM pickup.coordinate where season1 = ? or season2 = ? ORDER BY RAND() LIMIT ?', params);
+  const [rows, field] = await connection.execute('SELECT coordi_id, user_id, file FROM pickup.coordinate where (season1 = ? or season2 = ?) AND gender = ? ORDER BY RAND() LIMIT ?', params);
 
   if(rows.length < 1) {
       res.send('0');

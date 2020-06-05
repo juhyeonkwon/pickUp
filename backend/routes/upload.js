@@ -70,10 +70,11 @@ router.post('/', upload.single('file') ,async function(req, res, next) {
     item1 = req.body.item1,
     item2 = req.body.item2,
     item3 = req.body.item3,
-    memo = req.body.memo
+    gender = req.body.gender,
+    memo = req.body.memo,
     ]      
 
-    connection.query('INSERT INTO coordinate(user_id, file, score, report, week_score, situation1, situation2, color1, color2, color3, season1, season2, item1, item2, item3, memo) VALUES (?, ?, 0, 0, 0, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', params_coordi, 
+    connection.query('INSERT INTO coordinate(user_id, file, score, report, week_score, situation1, situation2, color1, color2, color3, season1, season2, item1, item2, item3, gender, memo) VALUES (?, ?, 0, 0, 0, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', params_coordi, 
         function(err, results, fields) {
             if(err) {
                 console.log(err)
