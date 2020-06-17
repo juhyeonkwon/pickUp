@@ -39,6 +39,7 @@ router.post('/', async function(req, res) {
         console.log('session 생성');
         req.session.user_id = rows[0].user_id;
         req.session.nick_name = rows[0].nick_name;
+        req.session.email = rows[0].email;
         req.session.logined = true;
 
         req.session.save(function() {
@@ -52,7 +53,8 @@ router.post('/check', function(req, res) {
         let param = {
             nick_name : req.session.nick_name,
             logined : req.session.logined,
-            user_id : req.session.user_id
+            user_id : req.session.user_id,
+            email : req.session.email
         }
         res.send(param);
     } else {

@@ -40,11 +40,10 @@ router.post('/modify_view', async function(req, res) {
 
     let connection = await mysqlPromise.createConnection(dbconfig);
 
-    const [rows, field] = await connection.execute('SELECT user_id,  file, situation1, situation2, color1, color2, season1, season2, item1, item2, item3, memo FROM coordinate WHERE coordi_id = ?', params)
+    const [rows, field] = await connection.execute('SELECT * FROM coordinate WHERE coordi_id = ?', params)
 
     //다른사람이 수정하려고 했을때 오류를 냅니다...
-
-    if(rows[0].user_id != req.cookies.user_id) {
+    if(rows[0].user_id != req.session.user_id) {
         res.send('0');
         connection.end();
 
@@ -65,30 +64,19 @@ router.post('/modify_view', async function(req, res) {
 
 })
 
-
-//사진 업로드를 위한 정의 
-let multer = require('multer');
-let storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, './static/coordi/')
-    },
-    filename: function(req, file, cb) {
-        cb(null, Date.now() + '-' +  file.originalname) 
-    }
-})
-
-let upload = multer({ storage : storage})
-
 //UPDATE 
 //UPDATE coordinate set file = 'abcabc', situation1 = '데이트', situation2 = '', color1 = '노란색',
 //color2 = '', season1 = '가을', season2 = '겨울', item1 = 'shirt', item2 = 'slex', item3 = '' WHERE coordi_id = 2
-router.post('/modify', upload.single('file'), function(req, res) {
+router.post('/modify', function(req, res) {
+    console.log(req.body);
+    
+    
     let params = [
-        file = req.file.filename,
         situation1 = req.body.situation1,
         situation2 = req.body.situation2,
         color1 = req.body.color1,
         color2 = req.body.color2,
+        color3 = req.body.color3,
         season1 = req.body.season1,
         season2 = req.body.season2,
         item1 = req.body.item1,
@@ -100,9 +88,9 @@ router.post('/modify', upload.single('file'), function(req, res) {
 
     let connection = mysql.createConnection(dbconfig);
 
-    connection.query('UPDATE coordinate set file = ?, situation1 = ?, situation2 = ?, color1 = ? , color2 = ?, season1 = ?, season2 = ?, item1 = ?, item2 = ?, item3 = ?, memo = ? WHERE coordi_id = ?', 
+    connection.query('UPDATE coordinate SET situation1 = ?, situation2 = ?, color1 = ? , color2 = ?, color3 = ?, season1 = ?, season2 = ?, item1 = ?, item2 = ?, item3 = ?, memo = ? WHERE coordi_id = ?', 
                     params, function(err, result) {
-                        if(result.affectedRows === 0) {
+                        if(err) {
                             console.log(err);
                             res.send('0');
                         } else {

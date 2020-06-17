@@ -54,7 +54,6 @@ router.post('/signUpDuplNick', function(req, res, next) {
       } else {
         res.send(true);
       }          
-      console.log(results);
     });   
     connection.end();
 

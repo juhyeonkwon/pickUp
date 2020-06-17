@@ -55,9 +55,9 @@ router.post('/view', async function(req, res){
 })
 
 //
-router.post('/modify', function(req, res) {
+router.post('/modify_pw', function(req, res) {
     let nick_name = req.body.nick_name;
-    let password = req.body.password;
+    let password = req.body.opassword;
 
     //암호화
     let cipher = crypto.createCipher('aes192', 'key');
@@ -66,26 +66,22 @@ router.post('/modify', function(req, res) {
     password = chipheredOutput;
 
     let params = [
-        nick_name = nick_name,
         password = password,
         user_id = req.session.user_id
     ]
 
     let con = mysql.createConnection(dbconfig);
 
-    con.query('UPDATE users SET nick_name = ?, password = ? WHERE user_id = ?', params, function(err, results, field) {
+    con.query('UPDATE users SET password = ? WHERE user_id = ?', params, function(err, results, field) {
         if(err) {
             console.log("error occured", err);
-            res.send({
-              "code" : 400,
-              "failed" : "error ocurred"
-            })
+            res.send('<script type="text/javascript">alert("오류가 발생 했습니다. 다시 시도해 주세요."); history.go(-1)</script>');
           }
           if(results.length) {
-            res.send('0');
-          } else {
-            res.send('1');
-          }            
+            res.send('<script type="text/javascript">alert("오류가 발생 했습니다. 다시 시도해 주세요."); history.go(-1)</script>');
+        } else {
+            res.send('<script type="text/javascript">alert("정보 수정 완료"); history.go(-2)</script>')
+        }            
           console.log(results);
     });
 
@@ -93,10 +89,44 @@ router.post('/modify', function(req, res) {
     
 })
 
+//닉네임 변경...
+router.post('/modify_nick', function(req, res) {
+    console.log('닉네임 변경');
+
+    let user_id = req.session.user_id;
+    let nickname = req.body.nickname;
+    let email = req.session.email
+
+    let params = [
+        nickname,
+        parseInt(user_id)
+    ];
+
+    let con = mysql.createConnection(dbconfig);
+
+    con.query('UPDATE users SET nick_name = ? WHERE user_id = ?', params, function(err, results, field) {
+        if(err) {
+            console.log('err', err);
+             res.send('<script type="text/javascript">alert("오류가 발생 했습니다. 다시 시도해 주세요."); history.go(-1)</script>');
+        } else {
+
+            req.session.user_id = user_id;
+            req.session.nick_name = nickname;
+            req.session.email = email;
+            req.session.logined = true;
+
+            req.session.save(function() {
+                res.send('<script type="text/javascript">alert("정보 수정 완료"); history.go(-2)</script>')
+            });
+
+        }
+    });
+});
+
 
 router.post('/pw_check', async function(req, res) {
-    console.log (req.body.user_id)
-    let id = parseInt(req.body.user_id)
+    console.log (req.body.password)
+    let id = parseInt(req.session.user_id)
     let password = req.body.password;
     let con = await mysqlPromise.createConnection(dbconfig);
     const [rows, field] = await con.execute('select password from users where user_id = ?', [ id ]);
@@ -112,9 +142,9 @@ router.post('/pw_check', async function(req, res) {
      password = chipheredOutput;
 
     if(rows[0].password != password) {
-        res.send('0');
+        res.send(false);
     } else {
-        res.send('1');
+        res.send(true);
     }
     con.end();
 
